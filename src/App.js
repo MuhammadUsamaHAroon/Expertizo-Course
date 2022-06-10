@@ -1,16 +1,27 @@
-import logo from "./logo.svg";
 import "./App.css";
-import Burger from "../src/Assets/Images/cheezburger.JPG";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Table, Container } from "react-bootstrap";
+
 function App() {
+
+  {/* TASK 1  */}
+
   const txt = "Hello World";
+  console.log(txt);
+
+{/* TASK 2  */}
 
   const obj = {
     naam: "Hello World Object",
   };
+  console.log(obj.naamnaam);
+
+  {/* TASK 3  */}
 
   const arr = ["We", "are", "United"];
+  console.log(arr[0] + " " + arr[1] + " " + arr[2]);
+
+  {/* TASK 4  */}
 
   const arrObj = [
     { name: "Hello World 1" },
@@ -18,6 +29,8 @@ function App() {
     { name: "Hello World 3" },
   ];
 
+  {/* TASK 5  */}
+  
   const complex = [
     { company: "XYZ", jobs: ["JavaScript", "React"] },
     { company: "ABC", jobs: ["Angular", "Ionic"] },
@@ -48,15 +61,12 @@ function App() {
       </h1>
       <ol style={{ width: "5%", margin: "auto" }}>
         <b>
-          {" "}
           <li>{arr[0]}</li>
         </b>
         <b>
-          {" "}
           <li>{arr[1]}</li>
         </b>
         <b>
-          {" "}
           <li>{arr[2]}</li>
         </b>
       </ol>
@@ -80,7 +90,8 @@ function App() {
 
       {/* TASK 5 */}
 
-      <h1>Task 5: Write Array Object //Show these in a Table</h1><br/>
+      <h1>Task 5: Write Array Object //Show these in a Table</h1>
+      <br /><br/>
       <Container>
         <Table striped bordered hover variant="dark">
           <thead>
@@ -104,11 +115,9 @@ function App() {
               <td>{complex[1].jobs[0]}</td>
               <td>{complex[1].jobs[1]}</td>
             </tr>
-            
           </tbody>
-        </Table>
-        </Container>
-      
+        </Table><br/><br/>
+      </Container>
     </div>
   );
 }
