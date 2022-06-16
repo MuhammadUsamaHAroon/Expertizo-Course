@@ -1,125 +1,147 @@
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Table, Container } from "react-bootstrap";
-
+import NavBar from "./Components/Navbar/navBar";
+import { Container, Button, Col, Row } from "react-bootstrap";
+import { useEffect, useState } from "react";
+import { ImBin } from "react-icons/im";
+import { BsPencilSquare } from "react-icons/bs";
+import SweetAlert from "react-bootstrap-sweetalert";
 function App() {
-  {
-    /* TASK 1  */
-  }
+  const [todos, setTodos] = useState(() => {
+    const getTodos = localStorage.getItem("ToDos");
+    if (getTodos) {
+      return JSON.parse(getTodos);
+    } else {
+      return [];
+    }
+  });
+  const [input, setInput] = useState("");
+  const [editToggle, setEditToggle] = useState(false);
+  const [editItems, setEditItems] = useState(null);
+  const [alert, setAlert] = useState(false);
+  useEffect(() => {
+    localStorage.setItem("ToDos", JSON.stringify(todos));
+  }, [todos]);
 
-  const txt = "Hello World";
-  console.log(txt);
-
-  {
-    /* TASK 2  */
-  }
-
-  const obj = {
-    naam: "Hello World Object",
+  const addItem = (e) => {
+    if (!input) {
+      setAlert(true);
+    } else {
+      const allToDoData = { id: new Date().getTime().toString(), text: input };
+      setTodos([...todos, allToDoData]);
+      setInput("");
+    }
   };
-  console.log(obj.naamnaam);
 
-  {
-    /* TASK 3  */
-  }
-
-  const arr = ["We", "are", "United"];
-  console.log(arr[0] + " " + arr[1] + " " + arr[2]);
-
-  {
-    /* TASK 4  */
-  }
-
-  const arrObj = [
-    { name: "Hello World 1", id: 0 },
-    { name: "Hello World 2", id: 1 },
-    { name: "Hello World 3", id: 2 },
-  ];
-
-  {
-    /* TASK 5  */
-  }
-
-  const complex = [
-    { id: 0, company: "XYZ", jobs: ["JavaScript", "React"] },
-    { id: 1, company: "ABC", jobs: ["Angular", "Ionic"] },
-  ];
+  const deleteItem = (id) => {
+    const copyText = todos.filter((items) => {
+      return id !== items.id;
+    });
+    setTodos(copyText);
+  };
+  const editItem = (id) => {
+    const editTodos = todos.find((items) => {
+      return items.id === id;
+    });
+    setEditToggle(true);
+    setInput(editTodos.text);
+    setEditItems(id);
+  };
+  const upDateItems = () => {
+    if (input && editToggle) {
+      setTodos(
+        todos.map((items) => {
+          if (items.id === editItems) {
+            return { ...items, text: input };
+          }
+          return items;
+        })
+      );
+      setEditToggle(false);
+      setInput("");
+      setEditItems(null);
+    }
+  };
   return (
     <div className="App">
-      {/* TASK 1  */}
-
-      <h1>Task 1: const name = "Hello World";</h1>
-      <p>
-        <b>{txt}</b>
-      </p>
-      <hr />
-
-      {/* TASK 2 */}
-
-      <h1>`Task 2: const object = naam: "Hello World Object"`</h1>
-      <p>
-        <b>{obj.naam}</b>
-      </p>
-      <hr />
-
-      {/* TASK 3 */}
-
-      <h1>
-        Task 3: const data = ['We', 'are', 'United'] //Show these in separate
-        tags
-      </h1>
-      {arr.map((items, index) => {
-        return (
-          <ul style={{ width: "5%", margin: "auto" }} key={index}>
-            <b>
-              <li>{items}</li>
-            </b>
-          </ul>
-        );
-      })}
-      <hr />
-
-      {/* TASK 4 */}
-
-      <h1>Task 4:Write Array Object //Show these in separate tags</h1>
-      {arrObj.map((items) => {
-        return (
-          <ul style={{ width: "10%", margin: "auto" }} key={items.id}>
-            <b>
-              <li>{items.name}</li>
-            </b>
-          </ul>
-        );
-      })}
-      <hr />
-
-      {/* TASK 5 */}
-      <h1>Task 5: Write Array Object //Show these in a Table</h1>
-      <br />
-      <br />
+      <NavBar />
       <Container>
-        <Table striped bordered hover variant="dark">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Company</th>
-              <th>Jobs</th>
-              <th>Jobs</th>
-            </tr>
-          </thead>
-          {complex.map((items, index) => {
-            return (
-              <tbody key={items.id}>
-                <tr>
-                  <td>{index + 1}</td>
-                  <td>{items.company}</td>
-                  <td>{items.jobs.slice(1, 3)}</td>
-                  <td>{items.jobs.slice(0, 1)}</td>
-                </tr>
-              </tbody>
-            );
-          })}
-        </Table><br/><br/>
+        <Row>
+          <Col xl={7} lg={8} md={8} sm={10} xs={12} style={{ margin: "auto" }}>
+            <div className="todosContainer mt-5">
+              <Row>
+                <Col>
+                  <div className="todosHead">
+                    <h3 className="mt-2">ToDos Items ({todos.length})</h3>
+                  </div>
+                </Col>
+              </Row>
+              <div className="todosBody">
+                <Row>
+                  <Col>
+                    <div className="todosInput">
+                      <input
+                        placeholder="Enter ToDos Here..."
+                        className="form-control"
+                        onChange={(e) => setInput(e.target.value)}
+                        value={input}
+                      />
+                      {!editToggle ? (
+                        <Button variant="success" onClick={addItem}>
+                          Submit
+                        </Button>
+                      ) : (
+                        <Button variant="primary" onClick={upDateItems}>
+                          UpDate
+                        </Button>
+                      )}
+                    </div>
+                  </Col>
+                </Row>
+                {todos.map((items) => {
+                  return (
+                    <Row key={items.id}>
+                      <Col>
+                        <div className="todosItem">
+                          <div className="todosText">
+                            <span>
+                              {alert ? (
+                                <div>
+                                  <SweetAlert
+                                    show={alert}
+                                    title="ToDos Cannot be Blank For Submit!!"
+                                    text={`SweetAlert in React`}
+                                    onConfirm={() => setAlert(false)}
+                                  />
+                                </div>
+                              ) : (
+                                items.text
+                              )}
+                            </span>
+                          </div>
+                          <div className="todosIcons">
+                            <BsPencilSquare
+                              size={30}
+                              color="green"
+                              style={{ marginRight: "10px", cursor: "pointer" }}
+                              onClick={() => editItem(items.id)}
+                            />
+                            <ImBin
+                              size={25}
+                              color="red"
+                              style={{ marginRight: "5px", cursor: "pointer" }}
+                              onClick={() => deleteItem(items.id)}
+                            />
+                          </div>
+                        </div>
+                      </Col>
+                    </Row>
+                  );
+                })}
+              </div>
+            </div>
+          </Col>
+        </Row>
       </Container>
     </div>
   );
