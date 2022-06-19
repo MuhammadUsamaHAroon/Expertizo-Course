@@ -64,12 +64,21 @@
   justify-content: space-between;
   text-align: center;
   align-items: center;
+  /* border: solid; */
+}
+.todosItem input{
+    margin-right: 15px;
+}
+.todosText span{
+  /* text-decoration: line-through; */
 }
 .todosText{
   margin-left: 15px;
+  /* border: solid; */
   font-size: larger;
   text-transform: capitalize;
-}
+
+}  
 .todosIcons{
   display: flex;
   justify-content: space-evenly;
@@ -80,4 +89,10 @@
 }
 .todosInput input{
   text-transform: capitalize;
+}
+.line-through{
+  text-decoration: line-through;
+}
+.none-line{
+  text-decoration: none;
 }
