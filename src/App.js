@@ -17,7 +17,6 @@ function App() {
   });
   const [input, setInput] = useState("");
   const [editToggle, setEditToggle] = useState(false);
-  // const [editItems, setEditItems] = useState(null);
   const [editIndex, setEditIndex] = useState();
   const [alert, setAlert] = useState(false);
   const [checkBox, setCheckBox] = useState(false);
@@ -61,14 +60,11 @@ function App() {
     setEditToggle(false);
   };
   const handleChange = (index) => {
-    
     setCheckBox(todos[index]);
-    const copyTodo = [...todos]
-    setTodos(copyTodo)
-    // console.log(todos)
-    // setCheckBox(!checkBox)
+    const copyTodo = [...todos];
+    setTodos(copyTodo);
   };
-  
+
   return (
     <div className="App">
       <NavBar />
@@ -125,7 +121,9 @@ function App() {
                               onChange={() => handleChange(index)}
                             />
                             <span
-                              className={checkBox?'line-through':'none-line'}
+                              className={
+                                checkBox ? "line-through" : "none-line"
+                              }
                             >
                               {alert ? (
                                 <SweetAlert
@@ -153,7 +151,6 @@ function App() {
                               onClick={() => deleteItem(index)}
                             />
                           </div>
-                          
                         </div>
                       </Col>
                     </Row>
