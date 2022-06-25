@@ -153,6 +153,7 @@ function App() {
                               onClick={() => deleteItem(index)}
                             />
                           </div>
+                          
                         </div>
                       </Col>
                     </Row>
