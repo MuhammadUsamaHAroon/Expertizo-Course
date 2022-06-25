@@ -88,120 +88,131 @@ function App() {
       ],
     },
   ];
-
-  const [curQues, setCurQues] = useState(0);
+  const [currQues, setCurrQues] = useState(0);
   const [alert, setAlert] = useState(false);
+  const [btnSubmit, setBtnSubmit] = useState(false);
   const [showScore, setShowScore] = useState(false);
   const [score, setScore] = useState(0);
-  const [btnSubmit, setBtnSubmit] = useState(false);
-
+  console.log(currQues + " " + score);
+  // const prevQuestion = currQues - 1;
+  // console.log(prevQuestion <= quiz.length);
   let quizPercent = (score / 100) * 100;
   let grade = "";
-  if (quizPercent < 50) {
+  if (score < 50) {
     grade = "Failed";
-  } else if (quizPercent <= 60) {
+  } else if (score < 60) {
     grade = "D";
-  } else if (quizPercent <= 70) {
+  } else if (score < 70) {
     grade = "C";
-  } else if (quizPercent <= 80) {
+  } else if (score < 80) {
     grade = "B";
-  } else if (quizPercent <= 90) {
+  } else if (score < 90) {
     grade = "A";
   } else {
     grade = "A+";
   }
+  // console.log(quizPercent+''+grade)
   const quizHandler = (isCorrect) => {
     if (isCorrect === true) {
       setScore(score + 10);
     } else {
-      console.log("false");
+      console.log(false);
     }
-    const nextQues = curQues + 1;
-    if (nextQues < quiz.length) {
-      setCurQues(nextQues);
+    const nextQuestion = currQues + 1;
+    if (nextQuestion < quiz.length) {
+      setCurrQues(nextQuestion);
     } else {
       setBtnSubmit(true);
     }
   };
-  const decreseQuiz = () => {
-    const preQues = curQues - 1;
-    if (curQues > 0) {
-      setCurQues(preQues);
+  const prevQues = () => {
+    const prevQuestion = currQues - 1;
+      if (currQues > 0) {
+      setCurrQues(prevQuestion);
       setBtnSubmit(false);
     } else {
       setAlert(true);
     }
+    if(currQues>0 && currQues<9){
+      setScore(score - 10)
+    }else{
+      setScore(score - 20
+        )
+    }
   };
-  const reSatrtQuiz = () => {
+  const reQuiz = () => {
     setShowScore(false);
-    setCurQues(0);
+    setCurrQues(0);
     setScore(null);
     setBtnSubmit(false);
   };
+
   return (
     <div>
       <NavBar />
       <Container fluid style={{ backgroundColor: "#fff", height: "100vh" }}>
         {showScore ? (
-          <Row
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              marginTop: "105px",
-            }}
-          >
-            <Col xl={5} lg={6} md={7} sm={9}>
-              <Row>
-                <div className="scoreBox">
-                  <Col>
-                    <h1>Score card</h1>
-                  </Col>
-                  <Col>
-                    <h3>{`Your Total Score is: ${score}`}</h3>
-                  </Col>
-                  <Col>
-                    <h3>{`Your Total % is: ${quizPercent}%`}</h3>
-                  </Col>
-                  <Col>
-                    <h3>{`Your Grade is: ${grade}`}</h3>
-                  </Col>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "right",
-                      alignItem: "center",
-                    }}
-                  >
-                    <button
+          <>
+            <Row
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                marginTop: "105px",
+              }}
+            >
+              <Col xl={5} lg={6} md={7} sm={9}>
+                <Row>
+                  <div className="scoreBox">
+                    <Col>
+                      <h1>Score card</h1>
+                    </Col>
+                    <Col>
+                      <h3>{`Your Total Score is: ${score}`}</h3>
+                    </Col>
+                    <Col>
+                      <h3>{`Your Total % is: ${quizPercent}%`}</h3>
+                    </Col>
+                    <Col>
+                      <h3>{`Your Grade is: ${grade}`}</h3>
+                    </Col>
+                    <div
                       style={{
-                        textTransform: "capitalize",
-                        cursor: "pointer",
-                        borderRadius: "10px",
-                        backgroundColor: "coral",
-                        color: "white",
-                        border: "none",
-                        width: "100px",
-                        height: "35px",
-                        textAlign: "center",
-                        marginRight: "15px",
+                        display: "flex",
+                        justifyContent: "right",
+                        alignItem: "center",
                       }}
-                      onClick={reSatrtQuiz}
                     >
-                      Restart Quiz
-                    </button>
+                      <button
+                        style={{
+                          textTransform: "capitalize",
+                          cursor: "pointer",
+                          borderRadius: "10px",
+                          backgroundColor: "coral",
+                          color: "white",
+                          border: "none",
+                          width: "100px",
+                          height: "35px",
+                          textAlign: "center",
+                          marginRight: "15px",
+                        }}
+                        onClick={reQuiz}
+                      >
+                        Restart Quiz
+                      </button>
+                    </div>
                   </div>
-                </div>
-              </Row>
-            </Col>
-          </Row>
+                </Row>
+              </Col>
+            </Row>
+          </>
         ) : (
           <>
             {alert ? (
               <div>
                 <SweetAlert
                   show={alert}
-                  title="You Have Reached The Start Of The Quiz!!"
+                  title="Please Select Your Options which these Q# and Submit Your Quiz!"
                   text={`SweetAlert in React`}
                   onConfirm={() => setAlert(false)}
                 />
@@ -223,27 +234,28 @@ function App() {
                     <Row>
                       <Col>
                         <div className="quizQuestion">
-                          <span>{`Q(${curQues + 1}):`} </span>
-                          <span>{quiz[curQues].question}</span>
+                          <span>{`Q(${currQues + 1}): `}</span>
+                          <span>{quiz[currQues].question}</span>
                         </div>
                       </Col>
                     </Row>
-                    {quiz[curQues].option.map((items, index) => {
+                    {quiz[currQues].option.map((item, index) => {
                       return (
                         <Row key={index}>
                           <Col>
                             <div className="quizOptionList">
                               <button
                                 className="quizOption"
-                                onClick={() => quizHandler(items.isCorrect)}
+                                onClick={() => quizHandler(item.isCorrect)}
                               >
-                                {items.optionAnswer}
+                                {item.optionAnswer}
                               </button>
                             </div>
                           </Col>
                         </Row>
                       );
                     })}
+
                     <Row>
                       <Col>
                         <div
@@ -267,7 +279,7 @@ function App() {
                               textAlign: "center",
                               marginRight: "15px",
                             }}
-                            onClick={decreseQuiz}
+                            onClick={prevQues}
                           >
                             back
                           </button>

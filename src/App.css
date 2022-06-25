@@ -84,13 +84,15 @@
   border-radius: 10px;
   background-color: #fff;
   cursor: pointer;
-  padding-top: 8px;
+  padding-top: 4px;
+  padding-bottom: 4px;
   font-size: 17px;
   text-align: left;
   margin-bottom: 5px;
   color: darkblue;
   width: 250px;
   text-align: center;
+
 }
 .quizOption:hover {
   transition: all.4s;
