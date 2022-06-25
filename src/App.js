@@ -74,17 +74,17 @@ function App() {
       question:
         "How to write an IF statement for executing some code if 'i' is NOT equal to ?",
       option: [
-        { optionAnswer: "(A) if(i != 5)", isCorrect: true },
         { optionAnswer: "(B) if i = !5 then", isCorrect: false },
+        { optionAnswer: "(A) if(i != 5)", isCorrect: true },
         { optionAnswer: "(C) if (i <> 5) ", isCorrect: false },
       ],
     },
     {
       question: "How does a WHILE loop start?",
       option: [
-        { optionAnswer: "(A) while(i <= 10)", isCorrect: true },
         { optionAnswer: "(B) while(i <=10; i++)", isCorrect: false },
         { optionAnswer: "(C) while(i = 1 to 10) ", isCorrect: false },
+        { optionAnswer: "(A) while(i <= 10)", isCorrect: true },
       ],
     },
   ];
@@ -93,11 +93,10 @@ function App() {
   const [alert, setAlert] = useState(false);
   const [showScore, setShowScore] = useState(false);
   const [score, setScore] = useState(0);
-  // console.log(score);
+  const [btnSubmit, setBtnSubmit] = useState(false);
 
   let quizPercent = (score / 100) * 100;
   let grade = "";
-  console.log(quizPercent);
   if (quizPercent < 50) {
     grade = "Failed";
   } else if (quizPercent <= 60) {
@@ -112,9 +111,6 @@ function App() {
     grade = "A+";
   }
   const quizHandler = (isCorrect) => {
-    // const copyQuiz = [...quiz];
-    // console.log(isCorrect)
-
     if (isCorrect === true) {
       setScore(score + 10);
     } else {
@@ -124,22 +120,24 @@ function App() {
     if (nextQues < quiz.length) {
       setCurQues(nextQues);
     } else {
-      setShowScore(true);
+      setBtnSubmit(true);
     }
   };
   const decreseQuiz = () => {
     const preQues = curQues - 1;
     if (curQues > 0) {
       setCurQues(preQues);
+      setBtnSubmit(false);
     } else {
-      setAlert(true)
+      setAlert(true);
     }
   };
-  const reSatrtQuiz = ()=>{
-    setShowScore(false)
-    setCurQues(0)
-    setScore(null)
-  }
+  const reSatrtQuiz = () => {
+    setShowScore(false);
+    setCurQues(0);
+    setScore(null);
+    setBtnSubmit(false);
+  };
   return (
     <div>
       <NavBar />
@@ -150,55 +148,50 @@ function App() {
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              marginTop:'105px'
+              marginTop: "105px",
             }}
           >
-            <Col
-              xl={5}
-              lg={6}
-              md={7}
-              sm={9}
-            ><Row>
-              
-              <div className="scoreBox">
-                <Col>
-                <h1>Score card</h1>
-                </Col>
-                <Col>
-                <h3>{`Your Total Score is: ${score}`}</h3>
-                </Col>
-                <Col>
-                <h3>{`Your Total % is: ${quizPercent}%`}</h3>
-                </Col>
-                <Col>
-                <h3>{`Your Grade is: ${grade}`}</h3>
-                </Col>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "right",
-                    alignItem: "center"
-                  }}
-                >
-                <button
-                  style={{
-                    textTransform: "capitalize",
-                    cursor: "pointer",
-                    borderRadius: "10px",
-                    backgroundColor: "coral",
-                    color: "white",
-                    border: "none",
-                    width: "100px",
-                    height: "35px",
-                    textAlign: "center",
-                    marginRight: "15px"
-                  }}
-                  onClick={reSatrtQuiz}
-                >
-                  Restart Quiz
-                </button>
+            <Col xl={5} lg={6} md={7} sm={9}>
+              <Row>
+                <div className="scoreBox">
+                  <Col>
+                    <h1>Score card</h1>
+                  </Col>
+                  <Col>
+                    <h3>{`Your Total Score is: ${score}`}</h3>
+                  </Col>
+                  <Col>
+                    <h3>{`Your Total % is: ${quizPercent}%`}</h3>
+                  </Col>
+                  <Col>
+                    <h3>{`Your Grade is: ${grade}`}</h3>
+                  </Col>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "right",
+                      alignItem: "center",
+                    }}
+                  >
+                    <button
+                      style={{
+                        textTransform: "capitalize",
+                        cursor: "pointer",
+                        borderRadius: "10px",
+                        backgroundColor: "coral",
+                        color: "white",
+                        border: "none",
+                        width: "100px",
+                        height: "35px",
+                        textAlign: "center",
+                        marginRight: "15px",
+                      }}
+                      onClick={reSatrtQuiz}
+                    >
+                      Restart Quiz
+                    </button>
+                  </div>
                 </div>
-              </div>
               </Row>
             </Col>
           </Row>
@@ -230,15 +223,11 @@ function App() {
                     <Row>
                       <Col>
                         <div className="quizQuestion">
-                          <span>{`(${curQues + 1}):`} </span>
+                          <span>{`Q(${curQues + 1}):`} </span>
                           <span>{quiz[curQues].question}</span>
-                          {/* <span className="quizNum">{`${curQues + 1} ${
-                            quiz.length
-                          }`}</span> */}
                         </div>
                       </Col>
                     </Row>
-                    {/* <div > */}
                     {quiz[curQues].option.map((items, index) => {
                       return (
                         <Row key={index}>
@@ -259,15 +248,30 @@ function App() {
                       <Col>
                         <div
                           style={{
-                            // border: "solid",
                             display: "flex",
                             justifyContent: "left",
                             alignItems: "left",
-                            // marginLeft:'165px
                             marginTop: "15px",
                           }}
                         >
-                          {curQues.length < 12 ? (
+                          <button
+                            style={{
+                              textTransform: "capitalize",
+                              cursor: "pointer",
+                              borderRadius: "10px",
+                              backgroundColor: "darkcyan",
+                              color: "white",
+                              border: "none",
+                              width: "70px",
+                              height: "35px",
+                              textAlign: "center",
+                              marginRight: "15px",
+                            }}
+                            onClick={decreseQuiz}
+                          >
+                            back
+                          </button>
+                          {btnSubmit ? (
                             <button
                               style={{
                                 textTransform: "capitalize",
@@ -280,29 +284,12 @@ function App() {
                                 height: "35px",
                                 textAlign: "center",
                               }}
+                              onClick={() => setShowScore(true)}
                             >
                               Submit
                             </button>
                           ) : (
-                            <>
-                              <button
-                                style={{
-                                  textTransform: "capitalize",
-                                  cursor: "pointer",
-                                  borderRadius: "10px",
-                                  backgroundColor: "darkcyan",
-                                  color: "white",
-                                  border: "none",
-                                  width: "70px",
-                                  height: "35px",
-                                  textAlign: "center",
-                                  marginRight: "15px",
-                                }}
-                                onClick={decreseQuiz}
-                              >
-                                back
-                              </button>
-                            </>
+                            <></>
                           )}
                         </div>
                       </Col>
