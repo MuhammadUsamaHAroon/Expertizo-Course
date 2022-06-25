@@ -1,9 +1,8 @@
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import NavBar from "./Components/Navbar/navBar";
-import { Container, Button, Col, Row } from "react-bootstrap";
-import { useEffect, useState } from "react";
-import { ImBin } from "react-icons/im";
+import { Container, Col, Row } from "react-bootstrap";
+import { useState } from "react";
 import SweetAlert from "react-bootstrap-sweetalert";
 function App() {
   const quiz = [
@@ -18,11 +17,7 @@ function App() {
     {
       question: "Where is the correct place to insert a JavaScript?",
       option: [
-        {
-          optionAnswer:
-            "(A) both the <head> section and <body> section are correct",
-          isCorrect: true,
-        },
+        { optionAnswer: "(A) both (B) And (C)", isCorrect: true },
         { optionAnswer: "(B) the <head> section", isCorrect: false },
         { optionAnswer: "(C) the <body> section", isCorrect: false },
       ],
@@ -30,24 +25,24 @@ function App() {
     {
       question: "HTML stands for?",
       option: [
-        { optionAnswer: "(A) Hyper Text Markup Language", isCorrect: true },
         { optionAnswer: "(B) Hyper Txt Makeup Language", isCorrect: false },
+        { optionAnswer: "(A) Hyper Text Markup Language", isCorrect: true },
         { optionAnswer: "(C) Hydro Text Markup Lanugage", isCorrect: false },
       ],
     },
     {
       question: "what is CSS?",
       option: [
-        { optionAnswer: "(A) Cascading Style sheet", isCorrect: true },
         { optionAnswer: "(B) Cdsak", isCorrect: false },
         { optionAnswer: "(C) Cdsak", isCorrect: false },
+        { optionAnswer: "(A) Cascading Style sheet", isCorrect: true },
       ],
     },
     {
       question: "How do you write Hello World in an alert box?",
       option: [
-        { optionAnswer: "(A) alert('Hello World')", isCorrect: true },
         { optionAnswer: "(B) alertBox('Hello World')", isCorrect: false },
+        { optionAnswer: "(A) alert('Hello World')", isCorrect: true },
         { optionAnswer: "(C) mgeBox('Hello World')", isCorrect: false },
       ],
     },
@@ -62,17 +57,17 @@ function App() {
     {
       question: "How do you call a function named 'myFunction'?",
       option: [
-        { optionAnswer: "(A) myFunction()", isCorrect: true },
         { optionAnswer: "(B) call function myFunction()", isCorrect: false },
+        { optionAnswer: "(A) myFunction()", isCorrect: true },
         { optionAnswer: "(C) call myFunction()", isCorrect: false },
       ],
     },
     {
       question: "How to write an IF statement in JavaScript?",
       option: [
-        { optionAnswer: "(A) if(i == 5)", isCorrect: true },
         { optionAnswer: "(B) if i == 5 then", isCorrect: false },
         { optionAnswer: "(C) if i = 5 ", isCorrect: false },
+        { optionAnswer: "(A) if(i == 5)", isCorrect: true },
       ],
     },
     {
@@ -94,38 +89,32 @@ function App() {
     },
   ];
 
-  const [input, setInput] = useState("");
   const [curQues, setCurQues] = useState(0);
   const [alert, setAlert] = useState(false);
   const [showScore, setShowScore] = useState(false);
   const [score, setScore] = useState(0);
-  // const [grade, setGrade] = useState('')
-  console.log(score);
+  // console.log(score);
 
-  let quizPercent = (score/100)*100;
-  let grade = ''
-  console.log(quizPercent)
-  if(quizPercent<50){
-    grade='Failed'
-  }else if(quizPercent<=60){
-    grade='D'
-  }
-  else if(quizPercent<=70){
-    grade='C'
-  }
-  else if(quizPercent<=80){
-    grade='B'
-  }
-  else if(quizPercent<=90){
-    grade='A'
-  }
-  else{
-    grade='A+'
+  let quizPercent = (score / 100) * 100;
+  let grade = "";
+  console.log(quizPercent);
+  if (quizPercent < 50) {
+    grade = "Failed";
+  } else if (quizPercent <= 60) {
+    grade = "D";
+  } else if (quizPercent <= 70) {
+    grade = "C";
+  } else if (quizPercent <= 80) {
+    grade = "B";
+  } else if (quizPercent <= 90) {
+    grade = "A";
+  } else {
+    grade = "A+";
   }
   const quizHandler = (isCorrect) => {
     // const copyQuiz = [...quiz];
     // console.log(isCorrect)
-    
+
     if (isCorrect === true) {
       setScore(score + 10);
     } else {
@@ -135,7 +124,6 @@ function App() {
     if (nextQues < quiz.length) {
       setCurQues(nextQues);
     } else {
-      setAlert(true);
       setShowScore(true);
     }
   };
@@ -144,48 +132,112 @@ function App() {
     if (curQues > 0) {
       setCurQues(preQues);
     } else {
-      alert("You Have Already Start Quiz!!");
+      setAlert(true)
     }
   };
+  const reSatrtQuiz = ()=>{
+    setShowScore(false)
+    setCurQues(0)
+    setScore(null)
+  }
   return (
     <div>
       <NavBar />
-      <Container style={{ border: "solid red" }}>
+      <Container fluid style={{ backgroundColor: "#fff", height: "100vh" }}>
         {showScore ? (
-          <div>
-            <h1>{`Your Total Score is: ${score}`}</h1>
-            <h1>{`Your Total % is: ${quizPercent}%`}</h1>
-            <h1>{`Your Grade is: ${grade}`}</h1>
-          </div>
-          
+          <Row
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              marginTop:'105px'
+            }}
+          >
+            <Col
+              xl={5}
+              lg={6}
+              md={7}
+              sm={9}
+            ><Row>
+              
+              <div className="scoreBox">
+                <Col>
+                <h1>Score card</h1>
+                </Col>
+                <Col>
+                <h3>{`Your Total Score is: ${score}`}</h3>
+                </Col>
+                <Col>
+                <h3>{`Your Total % is: ${quizPercent}%`}</h3>
+                </Col>
+                <Col>
+                <h3>{`Your Grade is: ${grade}`}</h3>
+                </Col>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "right",
+                    alignItem: "center"
+                  }}
+                >
+                <button
+                  style={{
+                    textTransform: "capitalize",
+                    cursor: "pointer",
+                    borderRadius: "10px",
+                    backgroundColor: "coral",
+                    color: "white",
+                    border: "none",
+                    width: "100px",
+                    height: "35px",
+                    textAlign: "center",
+                    marginRight: "15px"
+                  }}
+                  onClick={reSatrtQuiz}
+                >
+                  Restart Quiz
+                </button>
+                </div>
+              </div>
+              </Row>
+            </Col>
+          </Row>
         ) : (
           <>
             {alert ? (
               <div>
                 <SweetAlert
                   show={alert}
-                  title="You Have Reached The End Of The Quiz!!"
+                  title="You Have Reached The Start Of The Quiz!!"
                   text={`SweetAlert in React`}
                   onConfirm={() => setAlert(false)}
                 />
               </div>
             ) : (
-              <div className="quizContainer">
-                <Row>
-                  <Col>
+              <Row>
+                <Col
+                  xl={5}
+                  lg={6}
+                  md={6}
+                  sm={8}
+                  xs={12}
+                  style={{ margin: "auto" }}
+                >
+                  <div className="quizHeading">
+                    <p>quiz app</p>
+                  </div>
+                  <div className="quizBox">
                     <Row>
                       <Col>
                         <div className="quizQuestion">
-                          <span>{curQues + 1} </span>
+                          <span>{`(${curQues + 1}):`} </span>
                           <span>{quiz[curQues].question}</span>
-                          <span className="quizNum">{`${curQues + 1} ${
+                          {/* <span className="quizNum">{`${curQues + 1} ${
                             quiz.length
-                          }`}</span>
+                          }`}</span> */}
                         </div>
                       </Col>
                     </Row>
-                  </Col>
-                  <Col>
                     {/* <div > */}
                     {quiz[curQues].option.map((items, index) => {
                       return (
@@ -238,7 +290,7 @@ function App() {
                                   textTransform: "capitalize",
                                   cursor: "pointer",
                                   borderRadius: "10px",
-                                  backgroundColor: "coral",
+                                  backgroundColor: "darkcyan",
                                   color: "white",
                                   border: "none",
                                   width: "70px",
@@ -255,9 +307,9 @@ function App() {
                         </div>
                       </Col>
                     </Row>
-                  </Col>
-                </Row>
-              </div>
+                  </div>
+                </Col>
+              </Row>
             )}
           </>
         )}
