@@ -15,7 +15,7 @@ export default function FbFeed(props) {
           justifyContent: "center",
         }}
       >
-        <Col xl={6} style={{}}>
+        <Col xl={6}lg={6}md={7}sm={10}xs={12} style={{}}>
           <div className="feed-box">
             <Row>
               <Col
