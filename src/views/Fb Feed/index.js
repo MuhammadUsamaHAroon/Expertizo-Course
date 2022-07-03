@@ -3,9 +3,11 @@ import "../Fb Feed/index.css";
 import { Row, Col } from "react-bootstrap";
 import FbImageLibrary from "react-fb-image-grid";
 import { BiWorld } from "react-icons/bi";
-// import profile from "../../Assets/Images/Photo.jpg";
+// import profile from "../../Assets/Images/Photo.jpg"; 
+// import { SlackSelector } from 'react-reactions';
+import {AiOutlineLike} from 'react-icons/ai'
 export default function FbFeed(props) {
-  console.log(props.profileDetails.userImages);
+
   return (
     <>
       <Row
@@ -60,15 +62,17 @@ export default function FbFeed(props) {
               </Col>
             </Row>
             <Row>
-              <Col >
+              <Col>
                 <div className="user-images">
-                  <FbImageLibrary images={props.images} width={'100'} />
+                  <FbImageLibrary images={props.images} width={'100'}/>
                 </div>
               </Col>
             </Row>
+            <Row><Col>
+            {/* <SlackSelector/> */}
+            <AiOutlineLike size={25}/>
+            </Col></Row>
           </div>
-
-          {/* / */}
         </Col>
       </Row>
     </>
