@@ -54,18 +54,12 @@ function App() {
   ];
   const [nextQues, setNextQues] = useState(0);
   const [score, setScore] = useState(0);
-  const [screen, setScreen] = useState('Register')
+  const [screen, setScreen] = useState("Register");
   const [submit, setSubmit] = useState(false);
-
   const question = quiz[nextQues].question;
   const option = quiz[nextQues].option;
 
-  // console.log(question+' '+option)
   console.log(score);
-
-  useEffect(() => {
-    localStorage.setItem("Screens", JSON.stringify(screen));
-  }, [screen]);
   const start = () => {
     setScreen("Question");
   };

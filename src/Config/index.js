@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import SweetAlert from "react-bootstrap-sweetalert";
+import swal from "sweetalert";
 import {
   getAuth,
   connectAuthEmulator,
@@ -30,12 +30,20 @@ const registerUser = (userDetails) => {
   )
     .then(() => {
       console.log(userCredential.user);
-      alert("SuccessFully SignUp");
+      swal({
+        title: "SignUp Successfully!",
+        text: "You clicked the button!",
+        icon: "success",
+      });
     })
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
-      alert(errorCode, errorMessage);
+      swal({
+        title: "SignUp Failed",
+        text: errorMessage,
+        icon: "error",
+      });
     });
 };
 
@@ -47,13 +55,21 @@ const loginUser = (loginDetails) => {
   )
     .then(() => {
       console.log(userCredential.user);
-      alert("SuccessFully Login");
+      swal({
+        title: "Login Successfully!",
+        text: "You clicked the button!",
+        icon: "success",
+      });
     })
 
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
-      alert(errorMessage, errorCode);
+      swal({
+        title: "Login Failed",
+        text: errorMessage,
+        icon: "error",
+      });
     });
 };
 

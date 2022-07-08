@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "../Register/index.css";
 import { Row, Col, Button } from "react-bootstrap";
 import { registerUser } from "../../Config";
-import SweetAlert from "react-bootstrap-sweetalert";
+import swal from 'sweetalert'
 export default function Register(props) {
   const [alert, setAlert] = useState(false);
   const [userDetails, setUserDetails] = useState({
@@ -13,15 +13,22 @@ export default function Register(props) {
   const onHandleChange = (name, val) => {
     setUserDetails({ ...userDetails, [name]: val });
   };
-  const SignUp = () => {
+  const signUp = () => {
     if (!userDetails.name || !userDetails.email || !userDetails.password) {
-      setAlert(true);
+      swal({
+        title:'Fill The All Fileds',
+        text: "You clicked the button!",
+        icon:'warning'
+      })
       return;
     } else {
       registerUser(userDetails);
+      setUserDetails({
+        name: "",
+        email: "",
+        password: "",
+      });
     }
-
-    // setPassword("");
   };
   return (
     <>
@@ -99,7 +106,7 @@ export default function Register(props) {
                 xs={12}
                 style={{ margin: "auto" }}
               >
-                <Button className="mt-4 btn btn-success" onClick={SignUp}>
+                <Button className="mt-4 btn btn-success" onClick={signUp}>
                   Register
                 </Button>
               </Col>

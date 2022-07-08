@@ -12,8 +12,8 @@ export default function Question(props) {
   };
   return (
     <>
-      <Row style={{height:'100vh', backgroundColor:'#eee'}}> 
-        <Col xl={6}style={{margin:'auto', marginTop: "50px"}}>
+      <Row style={{ height: "100vh", backgroundColor: "#eee" }}>
+        <Col xl={6} style={{ margin: "auto", marginTop: "50px" }}>
           <div className="question-box">
             <Row>
               <Col>

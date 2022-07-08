@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "../../views/Login/index.css";
 import { Row, Col, Button } from "react-bootstrap";
 import { loginUser } from "../../Config";
+import swal from "sweetalert";
 export default function Login(props) {
   const [loginDetails, setLoginDetails] = useState({
     email: "",
@@ -10,13 +11,25 @@ export default function Login(props) {
   const onHandleChange = (name, value) => {
     setLoginDetails({ ...loginDetails, [name]: value });
   };
-  const SignUp = () => {
-    loginUser(loginDetails);
+  const signIn = () => {
+    if ((!loginDetails.email, !loginDetails.password)) {
+      swal({
+        title: "Fill The All Fileds",
+        text: "You clicked the button!",
+        icon: "warning",
+      });
+    } else {
+      loginUser(loginDetails);
+      setLoginDetails({
+        email: "",
+        password: "",
+      });
+    }
   };
   return (
     <>
       <Row>
-        <Col xl={6} style={{margin:'auto', marginTop:'50px'}}>
+        <Col xl={6} style={{ margin: "auto", marginTop: "50px" }}>
           <div className="login-box">
             <Row>
               <Col>
@@ -24,19 +37,32 @@ export default function Login(props) {
               </Col>
             </Row>
             <Row>
-              <Col xl={6} lg={6} md={8} sm={10} xs={10} style={{margin:'auto'}}> 
+              <Col
+                xl={6}
+                lg={6}
+                md={8}
+                sm={10}
+                xs={10}
+                style={{ margin: "auto" }}
+              >
                 <input
                   placeholder="Email"
                   className="form-control"
                   type="text"
                   value={loginDetails.email}
                   onChange={(e) => onHandleChange("email", e.target.value)}
-                  
                 />
               </Col>
             </Row>
             <Row>
-              <Col xl={6} lg={6} md={8} sm={10} xs={10} style={{margin:'auto'}}>
+              <Col
+                xl={6}
+                lg={6}
+                md={8}
+                sm={10}
+                xs={10}
+                style={{ margin: "auto" }}
+              >
                 <input
                   placeholder="Password"
                   className="form-control mt-3"
@@ -47,8 +73,15 @@ export default function Login(props) {
               </Col>
             </Row>
             <Row>
-              <Col xl={6} lg={6} md={8} sm={10} xs={12} style={{margin:'auto'}}>
-                <Button className="mt-4" onClick={SignUp}>
+              <Col
+                xl={6}
+                lg={6}
+                md={8}
+                sm={10}
+                xs={12}
+                style={{ margin: "auto" }}
+              >
+                <Button className="mt-4" onClick={signIn}>
                   Login
                 </Button>
               </Col>
