@@ -1,13 +1,13 @@
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Container, Col, Row } from "react-bootstrap";
-import { useEffect, useState } from "react";
-import NavBar from "../src/Components/Navbar/navBar";
+import { Container } from "react-bootstrap";
+import { useState } from "react";
 import Question from "./views/Question";
 import ScoreCard from "./views/ScoreCard";
 import Initially from "./views/Initially";
 import Register from "./views/Register";
 import Login from "./views/Login";
+import swal from "sweetalert";
 function App() {
   const quiz = [
     {
@@ -86,7 +86,11 @@ function App() {
       setNextQues(preQues);
       setSubmit(false);
     } else {
-      alert("jjkskjdj");
+      swal({
+        title: "You Need To Forward!",
+        text: "select Any option and click next button!",
+        icon: "warning",
+      });
     }
     if (nextQues > 0 && nextQues < 4) {
       setScore(score - 5);
@@ -105,11 +109,13 @@ function App() {
   };
   const reQuiz = () => {
     setNextQues(0);
-    setScreen("Question");
+    setScreen("Start");
     setSubmit(false);
     setScore(null);
   };
-
+  const loginToInitially = () => {
+    setScreen("Start");
+  };
   return (
     <div className="App">
       <Container fluid>
@@ -127,7 +133,12 @@ function App() {
         {screen === "Register" && (
           <Register screen={screen} signUpToLogin={signUpToLogin} />
         )}
-        {screen === "Login" && <Login loginToSignUp={loginToSignUp} />}
+        {screen === "Login" && (
+          <Login
+            loginToSignUp={loginToSignUp}
+            loginToInitially={loginToInitially}
+          />
+        )}
         {screen === "ScoreCard" && <ScoreCard score={score} reQuiz={reQuiz} />}
         {screen === "Start" && <Initially start={start} />}
       </Container>

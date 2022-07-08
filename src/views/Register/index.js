@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "../Register/index.css";
 import { Row, Col, Button } from "react-bootstrap";
 import { registerUser } from "../../Config";
-import swal from 'sweetalert'
+import swal from "sweetalert";
 export default function Register(props) {
   const [alert, setAlert] = useState(false);
   const [userDetails, setUserDetails] = useState({
@@ -16,24 +16,31 @@ export default function Register(props) {
   const signUp = () => {
     if (!userDetails.name || !userDetails.email || !userDetails.password) {
       swal({
-        title:'Fill The All Fileds',
+        title: "Fill The All Fileds",
         text: "You clicked the button!",
-        icon:'warning'
-      })
-      return;
+        icon: "warning",
+      });
     } else {
-      registerUser(userDetails);
+      registerUser(userDetails, props.signUpToLogin);
       setUserDetails({
         name: "",
         email: "",
         password: "",
       });
+      // props.signUpToLogin
     }
   };
   return (
     <>
       <Row>
-        <Col xl={6} style={{ margin: "auto", marginTop: "50px" }}>
+        <Col
+          xl={6}
+          lg={7}
+          md={8}
+          sm={10}
+          xs={11}
+          style={{ margin: "auto", marginTop: "50px" }}
+        >
           <div className="signUp-box">
             <Row>
               <Col>

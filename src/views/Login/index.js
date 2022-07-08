@@ -19,7 +19,7 @@ export default function Login(props) {
         icon: "warning",
       });
     } else {
-      loginUser(loginDetails);
+      loginUser(loginDetails, props.loginToInitially);
       setLoginDetails({
         email: "",
         password: "",
@@ -29,7 +29,14 @@ export default function Login(props) {
   return (
     <>
       <Row>
-        <Col xl={6} style={{ margin: "auto", marginTop: "50px" }}>
+        <Col
+          xl={6}
+          lg={7}
+          md={8}
+          sm={10}
+          xs={11}
+          style={{ margin: "auto", marginTop: "50px" }}
+        >
           <div className="login-box">
             <Row>
               <Col>

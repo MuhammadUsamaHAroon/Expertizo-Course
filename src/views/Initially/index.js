@@ -5,7 +5,7 @@ import { Row, Col } from "react-bootstrap";
 export default function Initially(props) {
   return (
     <>
-      <Row style={{height:'120vh',backgroundColor:'#eee'}}>
+      <Row style={{ height: "120vh", backgroundColor: "#eee" }}>
         <Col
           xl={6}
           lg={7}

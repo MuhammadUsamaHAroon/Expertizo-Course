@@ -22,7 +22,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 // connectAuthEmulator(auth, "http://localhost:9099");
 
-const registerUser = (userDetails) => {
+const registerUser = (userDetails, signUpToLogin) => {
   const userCredential = createUserWithEmailAndPassword(
     auth,
     userDetails.email,
@@ -35,6 +35,7 @@ const registerUser = (userDetails) => {
         text: "You clicked the button!",
         icon: "success",
       });
+      signUpToLogin();
     })
     .catch((error) => {
       const errorCode = error.code;
@@ -47,7 +48,7 @@ const registerUser = (userDetails) => {
     });
 };
 
-const loginUser = (loginDetails) => {
+const loginUser = (loginDetails, loginToInitially) => {
   const userCredential = signInWithEmailAndPassword(
     auth,
     loginDetails.email,
@@ -60,6 +61,7 @@ const loginUser = (loginDetails) => {
         text: "You clicked the button!",
         icon: "success",
       });
+      loginToInitially();
     })
 
     .catch((error) => {
