@@ -1,12 +1,13 @@
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Container, Col, Row } from "react-bootstrap";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NavBar from "../src/Components/Navbar/navBar";
 import Question from "./views/Question";
 import ScoreCard from "./views/ScoreCard";
 import Initially from "./views/Initially";
-// import SweetAlert from "react-bootstrap-sweetalert";
+import Register from "./views/Register";
+import Login from "./views/Login";
 function App() {
   const quiz = [
     {
@@ -53,7 +54,7 @@ function App() {
   ];
   const [nextQues, setNextQues] = useState(0);
   const [score, setScore] = useState(0);
-  const [screen, setScreen] = useState("Start");
+  const [screen, setScreen] = useState('Register')
   const [submit, setSubmit] = useState(false);
 
   const question = quiz[nextQues].question;
@@ -62,9 +63,12 @@ function App() {
   // console.log(question+' '+option)
   console.log(score);
 
-  const start = ()=>{
-    setScreen('Question')
-  }
+  useEffect(() => {
+    localStorage.setItem("Screens", JSON.stringify(screen));
+  }, [screen]);
+  const start = () => {
+    setScreen("Question");
+  };
   const quizHandler = (optionValue) => {
     const optionVal = option.find((items) => {
       return items.optionAnswer === optionValue;
@@ -99,6 +103,12 @@ function App() {
   const submitQuiz = () => {
     setScreen("ScoreCard");
   };
+  const signUpToLogin = () => {
+    setScreen("Login");
+  };
+  const loginToSignUp = () => {
+    setScreen("Register");
+  };
   const reQuiz = () => {
     setNextQues(0);
     setScreen("Question");
@@ -120,8 +130,12 @@ function App() {
             submitQuiz={submitQuiz}
           />
         )}
+        {screen === "Register" && (
+          <Register screen={screen} signUpToLogin={signUpToLogin} />
+        )}
+        {screen === "Login" && <Login loginToSignUp={loginToSignUp} />}
         {screen === "ScoreCard" && <ScoreCard score={score} reQuiz={reQuiz} />}
-        {screen === "Start" && <Initially start={start}/>}
+        {screen === "Start" && <Initially start={start} />}
       </Container>
     </div>
   );
