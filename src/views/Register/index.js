@@ -3,31 +3,62 @@ import "../Register/index.css";
 import { Row, Col, Button } from "react-bootstrap";
 import { registerUser } from "../../Config";
 import swal from "sweetalert";
+import { async } from "@firebase/util";
+import ClipLoader from "react-spinners/ClipLoader";
+
 export default function Register(props) {
-  const [alert, setAlert] = useState(false);
+  // const [alert, setAlert] = useState(false);
+  const [loader, setLoader] = useState(false);
+  // const [color, setColor] = useState('#eee')
   const [userDetails, setUserDetails] = useState({
-    name: "",
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
+    number: "",
   });
   const onHandleChange = (name, val) => {
     setUserDetails({ ...userDetails, [name]: val });
   };
-  const signUp = () => {
-    if (!userDetails.name || !userDetails.email || !userDetails.password) {
+  const signUp = async () => {
+    if (
+      !userDetails.firstName ||
+      !userDetails.lastName ||
+      !userDetails.email ||
+      !userDetails.password ||
+      !userDetails.number
+    ) {
       swal({
         title: "Fill The All Fileds",
         text: "You clicked the button!",
         icon: "warning",
       });
     } else {
-      registerUser(userDetails, props.signUpToLogin);
-      setUserDetails({
-        name: "",
-        email: "",
-        password: "",
-      });
-      // props.signUpToLogin
+      setLoader(true);
+      try {
+        const result = await registerUser(userDetails);
+        setUserDetails({
+          firstName: "",
+          lastName: "",
+          email: "",
+          password: "",
+          number: "",
+        });
+        props.changeScreen("Login");
+      } catch (e) {
+        alert(e.message);
+      } finally {
+        setLoader(false);
+      }
+
+      // registerUser(userDetails, props.signUpToLogin);
+      // setUserDetails({
+      //   firstName: "",
+      //   lastName: "",
+      //   email: "",
+      //   password: "",
+      //   number: "",
+      // });
     }
   };
   return (
@@ -57,12 +88,31 @@ export default function Register(props) {
                 style={{ margin: "auto" }}
               >
                 <input
-                  placeholder="Full Name"
+                  placeholder="First Name"
                   className="form-control"
                   type={"text"}
-                  value={userDetails.name}
-                  name="name"
-                  onChange={(e) => onHandleChange("name", e.target.value)}
+                  value={userDetails.firstName}
+                  name="firstName"
+                  onChange={(e) => onHandleChange("firstName", e.target.value)}
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col
+                xl={6}
+                lg={6}
+                md={8}
+                sm={10}
+                xs={10}
+                style={{ margin: "auto" }}
+              >
+                <input
+                  placeholder="Last Name"
+                  className="form-control mt-4"
+                  type={"text"}
+                  value={userDetails.lastName}
+                  name="lastName"
+                  onChange={(e) => onHandleChange("lastName", e.target.value)}
                 />
               </Col>
             </Row>
@@ -96,7 +146,7 @@ export default function Register(props) {
               >
                 <input
                   placeholder="Password"
-                  className="form-control mt-3"
+                  className="form-control mt-4"
                   type={"password"}
                   value={userDetails.password}
                   name="password"
@@ -110,21 +160,47 @@ export default function Register(props) {
                 lg={6}
                 md={8}
                 sm={10}
+                xs={10}
+                style={{ margin: "auto" }}
+              >
+                <input
+                  placeholder="Contact Number"
+                  className="form-control mt-4"
+                  type={"text"}
+                  value={userDetails.number}
+                  name="number"
+                  onChange={(e) => onHandleChange("number", e.target.value)}
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col
+                xl={6}
+                lg={6}
+                md={8}
+                sm={10}
                 xs={12}
                 style={{ margin: "auto" }}
               >
                 <Button className="mt-4 btn btn-success" onClick={signUp}>
-                  Register
+                  {loader ? (
+                    <div className="sweet-loading">
+                      <ClipLoader color="brown" loader={loader} size={40} />
+                    </div>
+                  ) : (
+                    "Register"
+                  )}
                 </Button>
               </Col>
             </Row>
+
             <Row>
               <Col>
                 <div className="bottom-text">
                   <span>you have already account</span>
                   <span
                     className="text-login"
-                    onClick={() => props.signUpToLogin()}
+                    onClick={() => props.changeScreen("Login")}
                   >
                     Login
                   </span>

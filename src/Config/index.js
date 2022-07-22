@@ -1,5 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+import { collection, addDoc, query, where, getDocs } from "firebase/firestore";
 import swal from "sweetalert";
 import {
   getAuth,
@@ -20,14 +22,21 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 // Initialize Firebase Authentication and get a reference to the service
 const auth = getAuth(app);
+const db = getFirestore(app);
 // connectAuthEmulator(auth, "http://localhost:9099");
 
-const registerUser = (userDetails, signUpToLogin) => {
-  const userCredential = createUserWithEmailAndPassword(
+const registerUser = async (userDetails, signUpToLogin) => {
+  const { firstName, lastName, email, password, number } = userDetails;
+  const userCredential = await createUserWithEmailAndPassword(
     auth,
-    userDetails.email,
-    userDetails.password
-  )
+    email,
+    password
+  );
+  const user = await addDoc(collection(db, "users"), {
+    firstName,
+    lastName,
+    number,
+  })
     .then(() => {
       console.log(userCredential.user);
       swal({
@@ -35,7 +44,6 @@ const registerUser = (userDetails, signUpToLogin) => {
         text: "You clicked the button!",
         icon: "success",
       });
-      signUpToLogin();
     })
     .catch((error) => {
       const errorCode = error.code;
@@ -48,20 +56,20 @@ const registerUser = (userDetails, signUpToLogin) => {
     });
 };
 
-const loginUser = (loginDetails, loginToInitially) => {
-  const userCredential = signInWithEmailAndPassword(
+const loginUser = async (loginDetails) => {
+  const { email, password } = loginDetails
+  const userCredential = await signInWithEmailAndPassword(
     auth,
-    loginDetails.email,
-    loginDetails.password
+    email,
+    password
   )
     .then(() => {
-      console.log(userCredential.user);
+      // console.log(userCredential.user);
       swal({
         title: "Login Successfully!",
         text: "You clicked the button!",
         icon: "success",
       });
-      loginToInitially();
     })
 
     .catch((error) => {
@@ -75,4 +83,16 @@ const loginUser = (loginDetails, loginToInitially) => {
     });
 };
 
-export { registerUser, loginUser };
+const getData = async () => {
+  const q = query(collection(db, "users"));
+  let data = []
+const querySnapshot = await getDocs(q);
+querySnapshot.forEach((doc) => {
+  // doc.data() is never undefined for query doc snapshots
+  data = [...data, doc.data()]
+  console.log(doc.id, " => ", data);
+});
+return data
+}
+
+export { registerUser, loginUser, getData };

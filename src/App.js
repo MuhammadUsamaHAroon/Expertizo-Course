@@ -1,14 +1,30 @@
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Container } from "react-bootstrap";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Question from "./views/Question";
 import ScoreCard from "./views/ScoreCard";
 import Initially from "./views/Initially";
 import Register from "./views/Register";
 import Login from "./views/Login";
 import swal from "sweetalert";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 function App() {
+  useEffect(() => {
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/firebase.User
+        const uid = user.uid;
+        console.log(user);
+      } else {
+        // User is signed out
+        console.log("Empty");
+      }
+    });
+  });
+  
   const quiz = [
     {
       question: "HTML stands for?",
@@ -101,11 +117,8 @@ function App() {
   const submitQuiz = () => {
     setScreen("ScoreCard");
   };
-  const signUpToLogin = () => {
-    setScreen("Login");
-  };
-  const loginToSignUp = () => {
-    setScreen("Register");
+  const changeScreen = (currentScreen) => {
+    setScreen(currentScreen);
   };
   const reQuiz = () => {
     setNextQues(0);
@@ -131,15 +144,15 @@ function App() {
           />
         )}
         {screen === "Register" && (
-          <Register screen={screen} signUpToLogin={signUpToLogin} />
+          <Register screen={screen} changeScreen={changeScreen} />
         )}
         {screen === "Login" && (
           <Login
-            loginToSignUp={loginToSignUp}
+            changeScreen={changeScreen}
             loginToInitially={loginToInitially}
           />
         )}
-        {screen === "ScoreCard" && <ScoreCard score={score} reQuiz={reQuiz} />}
+        {screen === "ScoreCard" && <ScoreCard score={score} reQuiz={reQuiz} changeScreen={changeScreen}/>}
         {screen === "Start" && <Initially start={start} />}
       </Container>
     </div>
