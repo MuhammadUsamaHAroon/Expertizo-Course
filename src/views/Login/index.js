@@ -30,7 +30,7 @@ export default function Login(props) {
         });
         const getUser = await getData()
         console.log(getUser)
-        props.changeScreen("Start");
+        props.changeScreen("AdsView");
       } catch (error) {
         alert(error.message);
       } finally {
